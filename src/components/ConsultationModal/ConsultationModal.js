@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import Modal from 'react-modal';
-import './ConsultationModal.css';
-import emailjs from 'emailjs-com';
+import React, { useState, useEffect } from "react";
+import Modal from "react-modal";
+import emailjs from "@emailjs/browser";
+import "./ConsultationModal.css";
 
 const ConsultationModal = ({ isOpen, onRequestClose }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -20,47 +21,57 @@ const ConsultationModal = ({ isOpen, onRequestClose }) => {
     setPhone(e.target.value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const templateParams = {
-      to_name: 'Tommy Bui',
-      from_name: name,
-      name: name,
-      email: email,
-      phone: phone,
-    };
-
-    emailjs
-      .send(
-        'service_gut6som', // Your EmailJS service ID
-        'template_03suyy8', // Your EmailJS template ID
-        templateParams,
-        'VU3-vPyznxsgFvzVo' // Your EmailJS user ID
-      )
-      .then(
-        (response) => {
-          console.log('Email sent successfully:', response.status, response.text);
-          alert('Email sent successfully');
-        },
-        (error) => {
-          console.error('There was an error sending the email:', error);
-          alert('Failed to send email');
-        }
-      );
-
-    onRequestClose();
+  const contactus = (name, email, phone) => {
+    return new Promise((resolve, reject) => {
+      emailjs
+        .send(
+          process.env.REACT_APP_EMAILJS_SERVICE_ID,
+          process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+          {
+            from_name: name,
+            to_name: "Tommy Bui",
+            from_email: email,
+            to_email: "buitommy998@gmail.com",
+            cc_email: "haizzzchic@gmail.com",
+            message: `Phone: ${phone}`,
+          },
+          process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+        )
+        .then(
+          (response) => {
+            resolve("Thank you. We will get back to you as soon as possible.");
+          },
+          (error) => {
+            console.error("Failed to send message:", error);
+            reject("Ahh, something went wrong. Please try again.");
+          }
+        );
+    });
   };
-
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      const result = await contactus(name, email, phone);
+      alert(result);
+      setName("");
+      setEmail("");
+      setPhone("");
+      onRequestClose();
+    } catch (error) {
+      alert(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     }
 
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     };
   }, [isOpen]);
 
@@ -74,24 +85,29 @@ const ConsultationModal = ({ isOpen, onRequestClose }) => {
     >
       <h2>Book a Free Consultation</h2>
       <p className="text__muted description">
-        Let us call you for a free consultation. Please provide your contact details below:
+        Let us call you for a free consultation. Please provide your contact
+        details below:
       </p>
-      <form className="consultation-form" onSubmit={handleSubmit}>
+      <form className="consultation-form">
         <label>
           Name:
-          <input type="text" value={name} onChange={handleNameChange} required />
+          <input type="text" value={name} onChange={handleNameChange} />
         </label>
         <label>
           Email:
-          <input type="email" value={email} onChange={handleEmailChange} required />
+          <input type="email" value={email} onChange={handleEmailChange} />
         </label>
         <label>
           Phone:
-          <input type="tel" value={phone} onChange={handlePhoneChange} required />
+          <input type="tel" value={phone} onChange={handlePhoneChange} />
         </label>
-        <button type="submit">Submit</button>
+        <button type="button" onClick={handleSubmit}>
+          Submit
+        </button>
       </form>
-      <button onClick={onRequestClose}>Close</button>
+      <button type="button" onClick={handleSubmit} disabled={loading}>
+        {loading ? "Sending..." : "Submit"}
+      </button>
     </Modal>
   );
 };
