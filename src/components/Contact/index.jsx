@@ -9,52 +9,51 @@ const Contact = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [loading, setLoading] = useState(false);
 
-  const contactus = (name, email, message) => {
-    return new Promise((resolve, reject) => {
-      emailjs
-        .send(
-          process.env.REACT_APP_EMAILJS_SERVICE_ID,
-          process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
-          {
-            from_name: name,
-            to_name: "Tommy Bui",
-            from_email: email,
-            to_email: "buitommy998@gmail.com",
-            cc_email: "haizzzchic@gmail.com",
-            message: message,
-          },
-          process.env.REACT_APP_EMAILJS_PUBLIC_KEY
-        )
-        .then(
-          (response) => {
-            resolve("Thank you. I will get back to you as soon as possible.");
-          },
-          (error) => {
-            console.error("Failed to send message:", error);
-            reject("Ahh, something went wrong. Please try again.");
-          }
-        );
-    });
-  };
+  const contactus = (name, email, phone, message) => {
+  return new Promise((resolve, reject) => {
+    emailjs
+      .send(
+        process.env.REACT_APP_EMAILJS_SERVICE_ID,
+        process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+        {
+          from_name: name,
+          from_email: email,
+          phone: phone,
+          message: message,
+        },
+        process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+      )
+      .then(
+        (response) => {
+          resolve("Thank you. We will get back to you as soon as possible.");
+        },
+        (error) => {
+          console.error("Failed to send message:", error);
+          reject("Something went wrong. Please try again.");
+        }
+      );
+  });
+};
+
+const handleSubmit = async () => {
+  setLoading(true);
+  try {
+    const result = await contactus(name, email, phone, "Consultation request");
+    alert(result);
+    setName('');
+    setEmail('');
+    setPhone('');
+    onRequestClose();
+  } catch (error) {
+    alert(error);
+  } finally {
+    setLoading(false);
+  }
+};
   
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const result = await contactus(form.name, form.email, form.message);
-      alert(result);
-      setForm({ name: "", email: "", message: "" });
-    } catch (error) {
-      alert(error);
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
