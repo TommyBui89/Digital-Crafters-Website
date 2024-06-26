@@ -51,14 +51,27 @@ const ConsultationModal = ({ isOpen, onRequestClose }) => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const result = await contactus(name, email, phone);
-      alert(result);
+      const result = await emailjs.send(
+        process.env.REACT_APP_EMAILJS_SERVICE_ID,
+        process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+        {
+          from_name: name,
+          from_email: email,
+          to_name: "Tommy Bui",
+          to_email: "buitommy998@gmail.com",
+          cc_email: "haizzzchic@gmail.com",
+          message: `Phone: ${phone}\nConsultation request`,
+        },
+        process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+      );
+      alert("Thank you. We will get back to you as soon as possible.");
       setName("");
       setEmail("");
       setPhone("");
       onRequestClose();
     } catch (error) {
-      alert(error);
+      console.error("Failed to send message:", error);
+      alert("Ahh, something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
