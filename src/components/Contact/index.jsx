@@ -35,25 +35,41 @@ const Contact = () => {
   });
 };
 
-const handleSubmit = async () => {
-  setLoading(true);
-  try {
-    const result = await contactus(name, email, phone, "Consultation request");
-    alert(result);
-    setName('');
-    setEmail('');
-    setPhone('');
-    onRequestClose();
-  } catch (error) {
-    alert(error);
-  } finally {
-    setLoading(false);
-  }
-};
-  
-  const handleChange = (e) => {
+const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    emailjs
+      .send(
+        process.env.REACT_APP_EMAILJS_SERVICE_ID,
+        process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+        {
+          from_name: form.name,
+          from_email: form.email,
+          to_name: "Tommy Bui",
+          to_email: "buitommy998@gmail.com",
+          cc_email: "haizzzchic@gmail.com",
+          message: form.message,
+        },
+        process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+      )
+      .then(
+        () => {
+          setLoading(false);
+          alert("Thank you. I will get back to you as soon as possible.");
+          setForm({ name: "", email: "", message: "" });
+        },
+        (error) => {
+          setLoading(false);
+          console.error("Failed to send message:", error);
+          alert("Ahh, something went wrong. Please try again.");
+        }
+      );
   };
 
   return (
