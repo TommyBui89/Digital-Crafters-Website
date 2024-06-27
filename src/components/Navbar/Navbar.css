@@ -18,7 +18,8 @@
     align-items: flex-end;
     gap: 15px;
     cursor: pointer;
-    font-size: 35px; /* Default size for larger screens */
+    font-size: 35px; 
+    align-self: center;
 }
 
 .navbar__container .tab__group {
