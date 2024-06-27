@@ -46,7 +46,7 @@ const Navbar = () => {
       {showSidebar && <div className="overlay" onClick={() => setShowSidebar(false)}></div>}
       
       <div className="logo__container" onClick={() => scroll.scrollToTop({ duration: 500 })}>
-        <p className='primary__title' style={{fontSize:'35px', marginTop:'0px'}}>Digital Crafters</p>
+        <p className='primary__title' style={{fontSize:'1.8rem', marginTop:'0px'}}>Digital Crafters</p>
       </div>
       
       <div className={`tab__group ${showSidebar ? 'show' : ''}`}>
