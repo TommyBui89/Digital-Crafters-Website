@@ -1,6 +1,7 @@
 .pricing-section {
   text-align: center;
-  padding: 50px;
+  padding: 1px 50px;
+  margin: 100px auto;
 }
 
 .pricing-nav {

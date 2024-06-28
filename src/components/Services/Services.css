@@ -1,3 +1,8 @@
+#services .section__wrapper {
+  padding: 0px 20px;
+  margin: 80px auto;
+}
+
 #services .services__group {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -11,7 +16,6 @@
   color: var(--color-text);
   padding: 40px 25px;
   isolation: isolate;
-  /* cursor: pointer; */ /* Removed this line to revert to default cursor */
 }
 
 #services .service::before,

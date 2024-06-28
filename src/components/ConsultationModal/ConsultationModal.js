@@ -21,37 +21,10 @@ const ConsultationModal = ({ isOpen, onRequestClose }) => {
     setPhone(e.target.value);
   };
 
-  const contactus = (name, email, phone) => {
-    return new Promise((resolve, reject) => {
-      emailjs
-        .send(
-          process.env.REACT_APP_EMAILJS_SERVICE_ID,
-          process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
-          {
-            from_name: name,
-            to_name: "Tommy Bui",
-            from_email: email,
-            to_email: "buitommy998@gmail.com",
-            cc_email: "haizzzchic@gmail.com",
-            message: `Phone: ${phone}`,
-          },
-          process.env.REACT_APP_EMAILJS_PUBLIC_KEY
-        )
-        .then(
-          (response) => {
-            resolve("Thank you. We will get back to you as soon as possible.");
-          },
-          (error) => {
-            console.error("Failed to send message:", error);
-            reject("Ahh, something went wrong. Please try again.");
-          }
-        );
-    });
-  };
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const result = await emailjs.send(
+      await emailjs.send(
         process.env.REACT_APP_EMAILJS_SERVICE_ID,
         process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
         {
@@ -76,6 +49,7 @@ const ConsultationModal = ({ isOpen, onRequestClose }) => {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -114,12 +88,12 @@ const ConsultationModal = ({ isOpen, onRequestClose }) => {
           Phone:
           <input type="tel" value={phone} onChange={handlePhoneChange} />
         </label>
-        <button type="button" onClick={handleSubmit}>
-          Submit
+        <button type="button" onClick={handleSubmit} disabled={loading}>
+          {loading ? "Sending..." : "Submit"}
         </button>
       </form>
-      <button type="button" onClick={handleSubmit} disabled={loading}>
-        {loading ? "Sending..." : "Submit"}
+      <button type="button" onClick={onRequestClose} className="close-button">
+        Close
       </button>
     </Modal>
   );
