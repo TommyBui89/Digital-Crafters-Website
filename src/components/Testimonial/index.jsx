@@ -1,6 +1,6 @@
-import React from 'react'
-import { profile3, profile4, profile5, profile6 } from '../../images'
-import "./Testimonial.css"
+import React from 'react';
+import { profile3, profile4, profile5 } from '../../images';
+import './Testimonial.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -9,32 +9,25 @@ import 'swiper/css/pagination';
 const data = [
   {
     avatar: profile3,
-    name: 'Samuel Eze',
-    review: ` Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-           veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea`
+    name: 'Steven Vo',
+    review: `DT Security Doors and Shutters has never been more efficient, thanks to the website built by Digital Crafters. 
+             The sleek design and ease of use have boosted our online sales and inquiries. Clients now enjoy a seamless 
+             experience when browsing products and requesting quotes. We couldn't be happier with the outcome!`,
   },
   {
     avatar: profile4,
-    name: 'Emmanuel Joseph',
-    review: ` Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-           veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea`
+    name: 'David H Phan',
+    review: `The Broadmeadows Place Medical Clinic website has transformed how we connect with our patients. 
+             With online booking and comprehensive service information, our patients find it easier to access 
+             the care they need. Digital Crafters’ dedication to ensuring the website met our specific needs was outstanding.`,
   },
   {
     avatar: profile5,
-    name: 'Gloria Chiwendu',
-    review: ` Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-           veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea`
+    name: 'Norman Chilchik',
+    review: `Integrated Insurance Solutions needed a complete online presence, and Digital Crafters delivered beyond expectations. 
+             The website not only looks great but also handles complex service requests seamlessly. 
+             Their responsiveness to feedback and attention to detail made the entire process smooth and effective.`,
   },
-  {
-    avatar: profile6,
-    name: 'Precious Stone',
-    review: ` Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-           veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea`
-  }
 ];
 
 const Testimonial = () => {
@@ -48,7 +41,8 @@ const Testimonial = () => {
           </p>
         </div>
 
-        <Swiper className="testimonial__container"
+        <Swiper
+          className="testimonial__container"
           modules={[Pagination]}
           spaceBetween={40}
           slidesPerView={1}
@@ -56,26 +50,22 @@ const Testimonial = () => {
           breakpoints={{
             700: {
               slidesPerView: 2,
-            }
+            },
           }}
         >
-          {data.map(({ avatar, name, review }, index) => {
-            return (
-              <SwiperSlide key={index} className="testimonial">
-                <div className="client__avatar">
-                  <img src={avatar} alt={review} />
-                </div>
-                <h3 className='client__name'>{name}</h3>
-                <small className="client__review">
-                  {review}
-                </small>
-              </SwiperSlide>
-            )
-          })}
+          {data.map(({ avatar, name, review }, index) => (
+            <SwiperSlide key={index} className="testimonial">
+              <div className="client__avatar">
+                <img src={avatar} alt={`Avatar of ${name}`} />
+              </div>
+              <h3 className="client__name">{name}</h3>
+              <small className="client__review">{review}</small>
+            </SwiperSlide>
+          ))}
         </Swiper>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Testimonial
+export default Testimonial;
