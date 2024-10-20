@@ -40,7 +40,7 @@ export const projects = [
       category: "Web",
       data: {
         description: `A website showcasing insurance options for users and businesses, with interactive features for exploring plans and getting quotes.`,
-        demoLink: "https://google.com/",
+        demoLink: "https://integratedinsurancesolutions.com.au/",
       },
     },
     {
