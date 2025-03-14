@@ -1,51 +1,104 @@
-#testimonial .section__wrapper{
+/* Main Wrapper */
+#testimonial .section__wrapper {
     display: grid;
     gap: 30px;
     grid-template-columns: 35% 60%;
 }
 
-#testimonial .testimonial__container{
+/* Swiper Container */
+#testimonial .testimonial__container {
     width: 100%;
     padding-bottom: 4rem !important;
 }
 
-#testimonial .client__avatar{
-    width: 4rem;
-    aspect-ratio: 1/1;
-    overflow: hidden;
-    border-radius: 50%;
-    margin: 0 auto 1rem;
-    border: var(--gray-border);
-}
-#testimonial .testimonial{
+/* Testimonial Card */
+#testimonial .testimonial {
     background: var(--color-ui-2);
     text-align: center;
-    padding: 20px;
+    padding: 30px;
     border-radius: var(--border-radius-4);
     user-select: none;
     box-shadow: var(--glow-shadow);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 350px; /* Increased height for taller cards */
 }
 
-#testimonial .client__review{
-    color:var(--color-text);
+/* Avatar (Profile Picture) */
+#testimonial .client__avatar {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    box-shadow: 0px 0px 15px var(--color-primary); /* Glow Effect */
+    border: 3px solid var(--color-primary); /* Solid border with primary color */
+}
+
+/* Ensuring the image is perfectly fitted inside the circle */
+#testimonial .client__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Client Name */
+#testimonial .client__name {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 8px;
+}
+
+/* Client Review */
+#testimonial .client__review {
+    color: var(--color-text);
     font-weight: 300;
-    font-size: 15px;
-    display: block;
-    width: 80%;
+    font-size: 16px;
+    width: 85%;
     margin: 0.8rem auto 0;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-
-
-.swiper-pagination-clickable .swiper-pagination-bullet{
+/* Swiper Pagination */
+.swiper-pagination-clickable .swiper-pagination-bullet {
     background: var(--color-primary);
 }
 
-
-
-
- @media screen and (max-width:950px){
-    #testimonial .section__wrapper{
+/* Responsive Styles */
+@media screen and (max-width: 950px) {
+    #testimonial .section__wrapper {
         grid-template-columns: 100%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #testimonial .testimonial {
+        height: auto;
+        padding: 20px;
+    }
+
+    #testimonial .client__avatar {
+        width: 4rem;
+        height: 4rem;
+    }
+
+    #testimonial .client__name {
+        font-size: 16px;
+    }
+
+    #testimonial .client__review {
+        font-size: 14px;
+        width: 90%;
     }
 }

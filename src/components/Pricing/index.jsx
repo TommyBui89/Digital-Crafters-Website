@@ -1,143 +1,157 @@
-import React, { useEffect, useRef, useState } from 'react';
-import ConsultationModal from '../ConsultationModal/ConsultationModal';
-import './Pricing.css'; 
+import React, { useEffect, useRef, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import ConsultationModal from "../ConsultationModal/ConsultationModal";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import "./Pricing.css"; 
 
 const tabs = [
   { name: "Web Development" },
   { name: "App Development" },
   { name: "Software Development" },
-  { name: "Chatbox Development" },
+  { name: "Chatbot Development" },
 ];
 
 const pricingData = [
   {
     category: "Web Development",
-    title: "Basic Web Development",
+    title: "Basic Website Development",
     price: "Starting from $1000",
-    description: "Developing high-quality, responsive websites tailored to meet your specific business needs and goals. Basic package includes websites made with WordPress, booking websites, and more.",
-    features: ["Responsive Design", "SEO Friendly", "Easy to Manage"],
+    description: "A professionally designed, fully responsive website tailored to your business needs.",
+    features: ["Responsive & Mobile-Friendly Design", "SEO Optimization", "CMS Integration", "Basic Contact Form"],
   },
   {
     category: "Web Development",
-    title: "Premium Web Development",
+    title: "Premium Website Development",
     price: "Starting from $2500",
-    description: "Developing high-quality, responsive websites tailored to meet your specific business needs and goals. Premium package includes websites made with WordPress or React, e-commerce websites, and more.",
-    features: ["Advanced Customization", "E-commerce Integration", "Priority Support", "Regular Updates"],
+    description: "A high-performance, fully customized website with advanced features for scaling businesses.",
+    features: ["Custom Design & Branding", "E-Commerce Integration", "Advanced SEO", "Priority Support"],
   },
   {
     category: "App Development",
-    title: "Basic App Development",
+    title: "Basic Mobile App Development",
     price: "Starting from $1500",
-    description: "Building mobile applications that offer a seamless user experience across all devices. Basic package includes apps made with Flutter.",
-    features: ["Cross-Platform Compatibility", "User-Friendly Interface", "Performance Optimization"],
+    description: "A simple yet efficient cross-platform mobile application designed to deliver a great user experience.",
+    features: ["Flutter Cross-Platform Development", "User-Friendly Interface", "Basic API Integration", "App Store Deployment"],
   },
   {
     category: "App Development",
-    title: "Premium App Development",
+    title: "Premium Mobile App Development",
     price: "Starting from $2500",
-    description: "Building mobile applications that offer a seamless user experience across all devices. Premium package includes apps made with Flutter and advanced features.",
-    features: ["Enhanced Security", "Custom Features", "Premium Support", "Future Updates"],
+    description: "A feature-rich mobile application with custom functionalities, security, and seamless user experience.",
+    features: ["Custom UI/UX Design", "Push Notifications & Analytics", "Enhanced Security", "Ongoing Maintenance"],
   },
   {
     category: "Software Development",
     title: "Basic Software Development",
     price: "Starting from $1500",
-    description: "Creating custom software solutions to streamline your business operations and enhance efficiency. Basic package includes software made with React, JavaScript, and Python.",
-    features: ["Scalable Solutions", "Efficient Workflows", "User-Friendly Interface"],
+    description: "Custom-built software solutions to streamline business operations and improve efficiency.",
+    features: ["Web-Based or Desktop Applications", "Node.js & .NET Backend", "Database Integration", "User Authentication"],
   },
   {
-    category: "Software Development",
-    title: "Premium Software Development",
-    price: "Starting from $2500",
-    description: "Creating custom software solutions to streamline your business operations and enhance efficiency. Premium package includes software made with React, JavaScript, and Python with advanced features.",
-    features: ["Enterprise-Grade Security", "Custom Integrations", "Premium Support", "Regular Maintenance"],
-  },
-  {
-    category: "Chatbox Development",
-    title: "Basic Chatbox Development",
+    category: "Chatbot Development",
+    title: "Basic Chatbot Development",
     price: "Starting from $500",
-    description: "Developing chatbots that provide excellent user interaction and support for your business. Basic package includes chatbots made with Botpress and integrated with WordPress or React.",
-    features: ["Basic Chatbot Functionality", "User-Friendly Interface", "Easy Integration"],
+    description: "An AI-powered chatbot to enhance customer interaction and automate basic tasks.",
+    features: ["Botpress Integration", "WordPress & React Support", "Conversational Flow", "User Engagement"],
   },
   {
-    category: "Chatbox Development",
-    title: "Premium Chatbox Development",
+    category: "Chatbot Development",
+    title: "Premium Chatbot Development",
     price: "Starting from $1000",
-    description: "Developing chatbots that provide excellent user interaction and support for your business. Premium package includes chatbots made with Botpress and integrated with WordPress or React with advanced features.",
-    features: ["Advanced AI Capabilities", "Custom Integrations", "Priority Support", "Regular Updates"],
+    description: "An intelligent chatbot with AI capabilities for personalized customer interactions.",
+    features: ["Advanced AI & NLP", "Custom API & CRM Integrations", "Multi-Language Support", "Continuous Improvements"],
   },
 ];
 
 const Pricing = () => {
   const [displayablePricing, setDisplayablePricing] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [offset, setOffset] = useState(0);
-  const [indicatorWidth, setIndicatorWidth] = useState(0);
   const itemsEls = useRef([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [indicatorStyle, setIndicatorStyle] = useState({ left: "0px", width: "0px" });
+
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: false, margin: "-50px" });
 
   useEffect(() => {
-    const prevEl = itemsEls.current.filter((_, index) => index < activeIndex);
-    const newOffset = prevEl.reduce((acc, el) => acc + el.offsetWidth, 0);
-    setOffset(newOffset);
-    setIndicatorWidth(itemsEls.current[activeIndex].offsetWidth);
+    setDisplayablePricing(pricingData.filter((item) => item.category === tabs[activeIndex].name));
   }, [activeIndex]);
 
   useEffect(() => {
-    setPricing(tabs[0].name);
-  }, []);
-
-  const setPricing = (category) => {
-    const filteredPricing = pricingData.filter((item) => item.category === category);
-    setDisplayablePricing(filteredPricing);
-  };
+    if (itemsEls.current[activeIndex]) {
+      const element = itemsEls.current[activeIndex];
+      setIndicatorStyle({ left: `${element.offsetLeft}px`, width: `${element.offsetWidth}px` });
+    }
+  }, [activeIndex]);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <div className="pricing-section" id="pricing">
+    <motion.div
+      className="pricing-section"
+      id="pricing"
+      ref={sectionRef}
+      initial={{ opacity: 0, scale: 0.9, y: 50 }}
+      animate={isInView ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.9, y: 50 }}
+      transition={{ duration: 0.8, ease: "easeOut", type: "spring", stiffness: 100 }}
+    >
       <h1 className="primary__title">Pricing</h1>
       <p className="text__muted description">Choose from our affordable packages</p>
+
       <nav className="pricing-nav">
         {tabs.map((tab, index) => (
           <button
             key={index}
-            ref={el => itemsEls.current[index] = el}
-            onClick={() => {
-              setActiveIndex(index);
-              setPricing(tab.name);
-            }}
+            ref={(el) => (itemsEls.current[index] = el)}
+            onClick={() => setActiveIndex(index)}
+            className={activeIndex === index ? "active" : ""}
           >
             {tab.name}
           </button>
         ))}
-        <span
-          className="active__indicator"
-          style={{ left: `${offset}px`, width: `${indicatorWidth}px` }}
-        />
+        <motion.span className="active__indicator" animate={indicatorStyle} />
       </nav>
-      <div className="pricing-cards">
-        {displayablePricing.map((plan, index) => (
-          <div className={`card ${plan.category.toLowerCase().replace(/\s+/g, '-')}`} key={index}>
-            <h3>{plan.title}</h3>
-            <h4>{plan.price}</h4>
-            <p>{plan.description}</p>
-            <button className="get-started" onClick={openModal}>Get Started</button>
-            <div className="features">
-              <p>What's included:</p>
-              <ul>
-                {plan.features.map((feature, i) => (
-                  <li key={i}>{feature}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        ))}
-      </div>
+
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeIndex}
+          className="pricing-cards"
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: -20 }}
+          transition={{ duration: 0.4 }}
+        >
+          {displayablePricing.map((plan, index) => (
+            <motion.div
+              key={index}
+              className="card"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              <h3>{plan.title}</h3>
+              <h4>{plan.price}</h4>
+              <p>{plan.description}</p>
+              <button className="get-started" onClick={openModal}>Get Started</button>
+              <div className="features">
+                <p>What's included:</p>
+                <ul>
+                  {plan.features.map((feature, i) => (
+                    <li key={i}>
+                      <FontAwesomeIcon icon={faCheckCircle} className="feature-icon" /> {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </AnimatePresence>
 
       <ConsultationModal isOpen={isModalOpen} onRequestClose={closeModal} />
-    </div>
+    </motion.div>
   );
 };
 

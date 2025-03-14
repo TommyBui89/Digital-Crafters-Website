@@ -36,7 +36,7 @@ const servicesData = [
   },
   {
     icon: <BiMessageRoundedDots className='icon' />,
-    title: 'Chatbox Creation',
+    title: 'Chatbot Creation',
     description: 'Developing chatbots that provide excellent user interaction and support for your business.',
   },
 ];
@@ -47,14 +47,43 @@ const Services = () => {
 
   useEffect(() => {
     const el = container.current;
-    gsap.fromTo('.service__head', 
-      { opacity: 0 }, 
-      { opacity: 1, scrollTrigger: { trigger: el } }
+
+    gsap.fromTo('.section__header', 
+      { opacity: 0, y: -30 }, 
+      { opacity: 1, y: 0, duration: 1, ease: "power2.out", scrollTrigger: { trigger: el, start: "top 80%" } }
     );
 
-    gsap.fromTo('.service', 
-      { y: -50, opacity: 0 }, 
-      { y: 0, opacity: 1, duration: 1, scrollTrigger: { trigger: el, start: "-100% bottom", end: "bottom 20%", scrub: true } }
+    gsap.fromTo('.service',
+      { opacity: 0, y: 50 },
+      { 
+        opacity: 1, 
+        y: 0, 
+        duration: 1, 
+        stagger: 0.2,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+          end: "bottom 20%",
+          toggleActions: "play reverse play reverse"
+        }
+      }
+    );
+
+    gsap.fromTo('.service',
+      { opacity: 1, y: 0 },
+      {
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        ease: "power3.in",
+        scrollTrigger: {
+          trigger: el,
+          start: "top 100%",
+          end: "bottom 5%",
+          toggleActions: "play none reverse none"
+        }
+      }
     );
   }, []);
 

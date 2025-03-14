@@ -12,10 +12,9 @@ const About = () => {
 
   useEffect(() => {
     const el = container.current;
-    gsap.fromTo('.about__container', {
-      scale: 0.7,
-    },
-      {
+    gsap.fromTo('.about__container', 
+      { scale: 0.7 }, 
+      { 
         scale: 1,
         scrollTrigger: {
           trigger: el,
@@ -23,8 +22,8 @@ const About = () => {
           markers: false,
         }
       }
-    )
-  }, [])
+    );
+  }, []);
 
   return (
     <section ref={container} id='about'>
@@ -44,11 +43,10 @@ const About = () => {
             Our team is committed to solving complex problems with innovative approaches, consistently delivering high-quality
             projects on time and within budget. Partner with us to transform your ideas into reality with precision and creativity.
           </p>
-          <button className="btn btn__primary">Read more</button>
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 export default About;

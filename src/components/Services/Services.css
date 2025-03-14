@@ -70,6 +70,7 @@
   border: solid 1px var(--color-primary);
   margin-right: 8px;
   border-radius: var(--border-radius-5);
+  pointer-events: none;
 }
 
 #services .service .icon {
